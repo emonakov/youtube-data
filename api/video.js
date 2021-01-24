@@ -3,7 +3,7 @@ const cache = require('axios-cache-plugin')
 
 let http = cache.default(axios)
 
-const { getEndpointUrl } = require('./helpers/buildUrl')
+const { getEndpointUrl } = require('../helpers/buildUrl')
 http.__addFilter(/v3\/video/)
 
 const { YOUTUBE_API_KEY, YOUTUBE_VIDEO_API_URL } = process.env
@@ -17,7 +17,6 @@ module.exports = async (req, res) => {
     const response = await http.get(endpointUrl)
 
     res.status(response.status)
-    res.header(response.header)
     res.json(response.data)
   } catch (e) {
     res.status(500)
