@@ -27,6 +27,9 @@ module.exports = async (req, res) => {
   } catch (e) {
     console.error(e)
     res.status(500)
+    if (e.response) {
+      res.json(e.response.data)
+    }
     res.json(e)
   }
 }
