@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     res.header(response.header)
     res.json(response.data)
   } catch (e) {
+    console.error(e)
     res.status(500)
     res.json(e)
   }
