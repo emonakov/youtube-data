@@ -6,14 +6,20 @@ let http = cache.default(axios)
 const { getEndpointUrl } = require('../helpers/buildUrl')
 http.__addFilter(/v3\/videos/)
 
-const { YOUTUBE_API_KEY, YOUTUBE_VIDEO_API_URL } = process.env
+const {
+  YOUTUBE_API_KEY,
+  YOUTUBE_VIDEO_API_URL,
+  YOUTUBE_SEARCH_MAX_RESULTS,
+} = process.env
 
 module.exports = async (req, res) => {
   const { pageToken } = req.query
   const endpointUrl = getEndpointUrl(YOUTUBE_VIDEO_API_URL, YOUTUBE_API_KEY, {
     chart: 'mostPopular',
+    maxResults: YOUTUBE_SEARCH_MAX_RESULTS,
     ...(pageToken && { pageToken }),
   })
+
   try {
     const response = await http.get(endpointUrl)
 
