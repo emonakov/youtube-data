@@ -20,8 +20,8 @@ module.exports = async (req, res) => {
     res.status(response.status)
     res.json(response.data)
   } catch (e) {
-    console.error(e)
-    res.status(500)
-    res.json(e)
+    console.error(e.response.data)
+    res.status(e.response.status)
+    res.json(e.response.data)
   }
 }
