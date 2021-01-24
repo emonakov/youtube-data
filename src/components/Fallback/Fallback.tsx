@@ -16,7 +16,7 @@ const Fallback: React.FC = () => {
 
   return (
     <FallbackContainer>
-      <Loading type="bars" color={theme.loadingColor} />
+      <Loading type="bars" color={theme.colors.loadingColor} />
     </FallbackContainer>
   )
 }

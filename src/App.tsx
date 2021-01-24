@@ -1,29 +1,35 @@
-import React, {
-  lazy,
-  Suspense,
-} from 'react'
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+import { HelmetProvider } from 'react-helmet-async'
 
-import { theme } from './config/theme'
+import MenuBar from './components/MenuBar'
+import Link from './components/shared/Link'
 import Fallback from './components/Fallback'
+import { theme } from './config/theme'
 
 const Counter = lazy(() => import('./Pages/Counter'))
 const NotFoundPage = lazy(() => import('./Pages/NotFound'))
 
 const App: React.FC = () => (
   <ThemeProvider theme={theme}>
-    <Router>
-      <Link to="/test">Counter</Link>
-      <Link to="/">Home</Link>
-      <Suspense fallback={<Fallback />}>
-        <Switch>
-          <Route path="/" exact />
-          <Route path="/test" exact component={Counter} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </Suspense>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <MenuBar>
+          <Link to="/" exact>
+            Home
+          </Link>
+          <Link to="/test">Counter</Link>
+        </MenuBar>
+        <Suspense fallback={<Fallback />}>
+          <Switch>
+            <Route path="/" exact />
+            <Route path="/test" exact component={Counter} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </Suspense>
+      </Router>
+    </HelmetProvider>
   </ThemeProvider>
 )
 
