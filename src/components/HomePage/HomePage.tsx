@@ -21,16 +21,17 @@ const HomePage: React.FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getMostPopular())
-  }, [dispatch])
+    if (!items) {
+      dispatch(getMostPopular())
+    }
+  }, [dispatch, items])
 
   return (
     <Container>
       <Head>Search youtube or see popular</Head>
       <GridContainer>
-        {items && items.map((item) => (
-          <VideoThumbnail key={item.id} item={item} />
-        ))}
+        {items &&
+          items.map((item) => <VideoThumbnail key={item.id} item={item} />)}
       </GridContainer>
       <Pagination onPageChange={getMostPopular} />
     </Container>
