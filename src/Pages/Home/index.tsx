@@ -1,2 +1,9 @@
 export { default } from './Home'
-export { getMostPopular, selectItems, selectPageTokens } from './homeSlice'
+export {
+  getMostPopular,
+  selectItems,
+  selectPageTokens,
+  selectSearchToken,
+  searchVideos,
+  setSearchToken,
+} from './homeSlice'

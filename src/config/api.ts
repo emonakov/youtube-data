@@ -1,3 +1,4 @@
 export const API = {
-  mostPopularEndpoint: '/api/getPopular'
+  mostPopularEndpoint: '/api/getPopular',
+  searchVideos: '/api/search',
 }

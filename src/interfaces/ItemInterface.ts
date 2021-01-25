@@ -1,5 +1,6 @@
 export interface ItemInterface {
   id: string
+  etag: string
   snippet: {
     description: string
     title: string
