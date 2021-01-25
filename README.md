@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
+## Guide
+
+Run `yarn`
+Copy `.env.example` to `.env.local`
+Add your `YOUTUBE_API_KEY` to `.env.local`
+Run the app with `yarn dev`
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -26,6 +33,20 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn fake:server`
+
+Runs the proxy app for development mode on port 8081.<br />
+
+### `yarn dev`
+
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the proxy app for development mode on port 8081.<br />
+
+
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
 ### `yarn eject`
 
