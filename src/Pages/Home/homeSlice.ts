@@ -28,6 +28,7 @@ export const homeSlice = createSlice({
       state.items = action.payload.items
       state.nextPageToken = action.payload.nextPageToken
       state.prevPageToken = action.payload.prevPageToken
+      state.error = undefined
     },
     loadError: (
       state: HomeStateInterface,
@@ -116,5 +117,6 @@ export const selectPageTokens = (state: RootState) => [
 ]
 export const selectSearchToken = (state: RootState) => state.home?.q
 export const selectLoading = (state: RootState) => state.home?.loading
+export const selectError = (state: RootState) => state.home?.error
 
 export default homeSlice.reducer

@@ -8,4 +8,5 @@ export {
   setSearchToken,
   selectLoading,
   cleanSearchToken,
+  selectError,
 } from './homeSlice'

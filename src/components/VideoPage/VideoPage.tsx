@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
@@ -6,13 +6,21 @@ import Loading from 'react-loading'
 import { Helmet } from 'react-helmet-async'
 import parse from 'html-react-parser';
 
+import { RootState } from '../../Pages/Video'
+
 import {
   getVideo,
   selectItem,
   selectLoading,
   cleanData,
+  initFavorites,
+  isFavSelector,
+  addToFavorites,
+  removeFromFavorites,
+  selectError,
 } from '../../Pages/Video'
-import { addToFavorites, removeFromFavorites, isFavorite } from '../../helpers/favStore'
+import { formatDurationToTime } from '../../helpers/youtube'
+import Error from '../shared/Error'
 
 const Container = styled.main`
   display: flex;
@@ -47,7 +55,8 @@ const Fav = styled.li`
 
 const HomePage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
-  const [fav, setFav] = useState<boolean>(isFavorite(id))
+  const fav = useSelector<RootState>(state => isFavSelector(state, id))
+  const error = useSelector(selectError)
   const theme = useContext(ThemeContext)
   const item = useSelector(selectItem)
   const isLoading = useSelector(selectLoading)
@@ -55,20 +64,12 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getVideo(id))
+    dispatch(initFavorites())
 
     return () => {
       dispatch(cleanData())
     }
   }, [dispatch, id])
-
-  useEffect(() => {
-    if (fav) {
-      addToFavorites(id)
-    }
-    if (!fav) {
-      removeFromFavorites(id)
-    }
-  }, [fav, id])
 
   return item && isLoading === false ? (
     <>
@@ -86,8 +87,9 @@ const HomePage: React.FC = () => {
             <li>{parse('&#x1F44D')} {item.statistics.likeCount}</li>
             <li>{parse('&#x1F44E')} {item.statistics.dislikeCount}</li>
             <li>{parse('&#x1F4AC')} {item.statistics.commentCount}</li>
-            {!fav && <Fav onClick={() => setFav(true)}>{parse('&#x1F90D')}</Fav>}
-            {fav && <Fav onClick={() => setFav(false)}>{parse('&#x1F496')}</Fav>}
+            {!fav && <Fav onClick={() => dispatch(addToFavorites(id))}>{parse('&#x1F90D')}</Fav>}
+            {fav && <Fav onClick={() => dispatch(removeFromFavorites(id))}>{parse('&#x1F496')}</Fav>}
+            <li>{parse('&#x231A')} {formatDurationToTime(item.contentDetails.duration)}</li>
           </Stats>
         </div>
         <div>
@@ -99,6 +101,7 @@ const HomePage: React.FC = () => {
     <Container>
         {isLoading && <Loading type="spin" color={theme.colors.niceGreen} />}
         {isLoading === false && <h1>Video not found</h1>}
+        <Error error={error} />
     </Container>
   )
 }

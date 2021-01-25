@@ -31,4 +31,7 @@ export interface ItemInterface {
     likeCount: number
     viewCount: number
   }
+  contentDetails: {
+    duration: string
+  }
 }

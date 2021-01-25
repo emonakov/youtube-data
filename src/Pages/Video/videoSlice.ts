@@ -7,6 +7,12 @@ import { buildEndpointUrl } from '../../helpers/buildUrl'
 import { VideoStateInterface } from '../../interfaces/VideoStateInterface'
 import { ItemInterface } from '../../interfaces/ItemInterface'
 
+import {
+  addToFavoritesStore,
+  removeFromFavoritesStore,
+  getAllFavoritesStore,
+} from '../../helpers/favStore'
+
 const initialState: VideoStateInterface = {}
 
 export const videoSlice = createSlice({
@@ -17,6 +23,7 @@ export const videoSlice = createSlice({
       state: VideoStateInterface,
       action: PayloadAction<ItemInterface>,
     ) => {
+      state.error = undefined
       state.item = action.payload
     },
     loadError: (
@@ -33,11 +40,36 @@ export const videoSlice = createSlice({
     },
     cleanData: (state: VideoStateInterface) => {
       state.item = undefined
-    }
+    },
+    initFavorites: (state: VideoStateInterface) => {
+      state.favorites = getAllFavoritesStore()
+    },
+    addToFavorites: (
+      state: VideoStateInterface,
+      action: PayloadAction<string>,
+    ) => {
+      state.favorites?.push(action.payload)
+      addToFavoritesStore(action.payload)
+    },
+    removeFromFavorites: (
+      state: VideoStateInterface,
+      action: PayloadAction<string>,
+    ) => {
+      state.favorites = state.favorites?.filter((fav) => fav !== action.payload)
+      removeFromFavoritesStore(action.payload)
+    },
   },
 })
 
-export const { loadData, loadError, setIsLoading, cleanData } = videoSlice.actions
+export const {
+  loadData,
+  loadError,
+  setIsLoading,
+  cleanData,
+  initFavorites,
+  addToFavorites,
+  removeFromFavorites,
+} = videoSlice.actions
 
 export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
   const endpoint = buildEndpointUrl(API.getVideo, { v: videoId })
@@ -45,7 +77,9 @@ export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
   dispatch(setIsLoading(true))
 
   try {
-    const { data: { items } } = await axios.get(endpoint)
+    const {
+      data: { items },
+    } = await axios.get(endpoint)
     const [item] = items
     dispatch(loadData(item))
   } catch (e) {
@@ -58,5 +92,8 @@ export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
 
 export const selectItem = (state: RootState) => state.video?.item
 export const selectLoading = (state: RootState) => state.video?.loading
+export const isFavSelector = (state: RootState, videoId: string) =>
+  state.video.favorites?.includes(videoId)
+export const selectError = (state: RootState) => state.video?.error
 
 export default videoSlice.reducer

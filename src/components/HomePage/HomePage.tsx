@@ -7,6 +7,7 @@ import Search from '../Search'
 import Pagination from '../shared/Pagination'
 import GridContainer from '../shared/GridContainer'
 import VideoThumbnail from '../shared/VideoThumbnail'
+import Error from '../shared/Error'
 import {
   getMostPopular,
   selectItems,
@@ -16,6 +17,7 @@ import {
   setSearchToken,
   selectLoading,
   cleanSearchToken,
+  selectError,
 } from '../../Pages/Home'
 
 const Container = styled.main`
@@ -39,6 +41,7 @@ const Header = styled.header`
 
 const HomePage: React.FC = () => {
   const theme = useContext(ThemeContext)
+  const error = useSelector(selectError)
   const items = useSelector(selectItems)
   const searchTerm = useSelector(selectSearchToken)
   const [prevPageToken, nextPageToken] = useSelector(selectPageTokens)
@@ -73,6 +76,7 @@ const HomePage: React.FC = () => {
         <Head>Search youtube or see popular</Head>
         <Search onSearch={onSearch} onReset={onReset} searchTerm={searchTerm} />
         {searchTerm && <span>search term: {searchTerm}</span>}
+        <Error error={error} />
       </Header>
       <Container>
         {!isLoading && (
@@ -92,9 +96,7 @@ const HomePage: React.FC = () => {
             />
           </>
         )}
-        {
-          isLoading && <Loading type="spin" color={theme.colors.niceGreen} />
-        }
+        {isLoading && <Loading type="spin" color={theme.colors.niceGreen} />}
       </Container>
     </>
   )
