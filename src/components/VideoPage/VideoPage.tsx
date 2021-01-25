@@ -32,6 +32,14 @@ const Header = styled.header`
   padding: ${({ theme }) => theme.paddingContent};
 `
 
+const Stats = styled.ul`
+  padding: 0;
+  list-style: none;
+  display: flex;
+  font-size: 16px;
+  justify-content: space-evenly;
+`
+
 const HomePage: React.FC = () => {
   const theme = useContext(ThemeContext)
   const item = useSelector(selectItem)
@@ -58,11 +66,12 @@ const HomePage: React.FC = () => {
       <Container>
         <div>
           {parse(item.player.embedHtml)}
-          <ul>
-            {Object.entries(item.statistics).map(([k, v]) => (
-              <p key={k}>{k}: {v}</p>
-            ))}
-          </ul>
+          <Stats>
+            <li>{parse('&#x1F440')} {item.statistics.viewCount}</li>
+            <li>{parse('&#x1F44D')} {item.statistics.likeCount}</li>
+            <li>{parse('&#x1F44E')} {item.statistics.dislikeCount}</li>
+            <li>{parse('&#x1F4AC')} {item.statistics.commentCount}</li>
+          </Stats>
         </div>
         <div>
           <p>{item.snippet.description}</p>
