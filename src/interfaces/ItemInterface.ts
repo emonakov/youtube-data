@@ -1,5 +1,9 @@
+interface VideoId {
+  videoId: string
+}
+
 export interface ItemInterface {
-  id: string
+  id: string | VideoId
   etag: string
   snippet: {
     description: string
