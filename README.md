@@ -2,10 +2,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Guide
 
-Run `yarn`
-Copy `.env.example` to `.env.local`
-Add your `YOUTUBE_API_KEY` to `.env.local`
-Run the app with `yarn dev`
+Run `yarn`<br />
+Copy `.env.example` to `.env.local`<br />
+Add your `YOUTUBE_API_KEY` to `.env.local`<br />
+Run the app with `yarn dev`<br />
 
 ## Available Scripts
 
