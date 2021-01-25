@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
+import Loading from 'react-loading'
+
 
 import Search from '../Search'
 import Pagination from '../shared/Pagination'
@@ -13,6 +15,7 @@ import {
   searchVideos,
   selectPageTokens,
   setSearchToken,
+  selectLoading,
 } from '../../Pages/Home'
 
 const Container = styled.main`
@@ -34,9 +37,11 @@ const Header = styled.header`
 `
 
 const HomePage: React.FC = () => {
+  const theme = useContext(ThemeContext)
   const items = useSelector(selectItems)
   const searchToken = useSelector(selectSearchToken)
   const [prevPageToken, nextPageToken] = useSelector(selectPageTokens)
+  const isLoading = useSelector(selectLoading)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -68,16 +73,26 @@ const HomePage: React.FC = () => {
         <Search onSearch={onSearch} onReset={onReset} />
       </Header>
       <Container>
-        <GridContainer>
-          {items &&
-            items.map((item) => <VideoThumbnail key={item.etag} item={item} />)}
-          {items?.length === 0 && <h2>Nothing found</h2>}
-        </GridContainer>
-        <Pagination
-          onPageChange={searchToken ? onSearchNextPage : onPopularNextPage}
-          nextPage={nextPageToken}
-          prevPage={prevPageToken}
-        />
+        {!isLoading && (
+          <>
+            <GridContainer>
+              {items &&
+                items.map((item) => (
+                  <VideoThumbnail key={item.etag} item={item} />
+                ))}
+              {items?.length === 0 && <h2>Nothing found</h2>}
+            </GridContainer>
+            <Pagination
+              onPageChange={searchToken ? onSearchNextPage : onPopularNextPage}
+              nextPage={nextPageToken}
+              prevPage={prevPageToken}
+              isDisabled={isLoading}
+            />
+          </>
+        )}
+        {
+          isLoading && <Loading type="spin" color={theme.colors.niceGreen} />
+        }
       </Container>
     </>
   )

@@ -32,10 +32,21 @@ export const homeSlice = createSlice({
     ) => {
       state.error = action.payload.error
     },
+    setIsLoading: (
+      state: HomeStateInterface,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.loading = action.payload
+    },
   },
 })
 
-export const { loadData, loadError, setSearchToken } = homeSlice.actions
+export const {
+  loadData,
+  loadError,
+  setSearchToken,
+  setIsLoading,
+} = homeSlice.actions
 
 const getVideos = async ({
   apiUrl,
@@ -43,24 +54,29 @@ const getVideos = async ({
   params,
   successCallback,
   errorCallback,
+  setLoading,
 }: {
   apiUrl: string
   pageToken?: string
   params?: Record<string, any>
   successCallback: <T>(data: T) => void
   errorCallback: <T>(data: T) => void
+  setLoading: (isLoading: boolean) => void
 }) => {
   let endpoint = buildEndpointUrl(apiUrl, params)
   if (pageToken) {
     endpoint = buildEndpointUrl(apiUrl, { ...params, pageToken })
   }
+  setLoading(true)
 
   try {
     const response = await axios.get(endpoint)
     successCallback(response.data)
+    setLoading(false)
   } catch (e) {
     console.error(e)
     errorCallback(e.response.data)
+    setLoading(false)
   }
 }
 
@@ -72,6 +88,7 @@ export const getMostPopular = (pageToken?: string): AppThunk => async (
     pageToken,
     successCallback: (data: HomeStateInterface) => dispatch(loadData(data)),
     errorCallback: (data: HomeStateInterface) => dispatch(loadError(data)),
+    setLoading: (isLoading: boolean) => dispatch(setIsLoading(isLoading)),
   })
 
 export const searchVideos = (
@@ -84,6 +101,7 @@ export const searchVideos = (
     params: { q: searchToken },
     successCallback: (data: HomeStateInterface) => dispatch(loadData(data)),
     errorCallback: (data: HomeStateInterface) => dispatch(loadError(data)),
+    setLoading: (isLoading: boolean) => dispatch(setIsLoading(isLoading)),
   })
 }
 
@@ -93,5 +111,6 @@ export const selectPageTokens = (state: RootState) => [
   state.home.nextPageToken,
 ]
 export const selectSearchToken = (state: RootState) => state.home?.q
+export const selectLoading = (state: RootState) => state.home?.loading
 
 export default homeSlice.reducer

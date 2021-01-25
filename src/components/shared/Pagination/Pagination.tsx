@@ -27,25 +27,30 @@ const Button = styled.button`
     color: ${({ theme }) => theme.colors.textHoverColor};
     background: ${({ theme }) => theme.colors.backgroundHover};
   }
-`;
+`
 
 interface Props {
   onPageChange: (token: string) => void
   prevPage?: string
   nextPage?: string
+  isDisabled?: boolean
 }
 
-const Pagination: React.FC<Props> = ({ onPageChange, prevPage, nextPage }) => {
-
+const Pagination: React.FC<Props> = ({
+  onPageChange,
+  prevPage,
+  nextPage,
+  isDisabled,
+}) => {
   return (
     <Container>
       {prevPage && (
-        <Button onClick={() => onPageChange(prevPage)}>
+        <Button disabled={isDisabled} onClick={() => onPageChange(prevPage)}>
           &#8249;
         </Button>
       )}
       {nextPage && (
-        <Button onClick={() => onPageChange(nextPage)}>
+        <Button disabled={isDisabled} onClick={() => onPageChange(nextPage)}>
           &#8250;
         </Button>
       )}

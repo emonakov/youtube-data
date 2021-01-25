@@ -6,4 +6,5 @@ export interface HomeStateInterface {
   nextPageToken?: string
   prevPageToken?: string
   error?: string
+  loading?: boolean
 }
