@@ -72,12 +72,12 @@ const getVideos = async ({
   try {
     const response = await axios.get(endpoint)
     successCallback(response.data)
-    setLoading(false)
   } catch (e) {
     console.error(e)
     errorCallback(e.response.data)
-    setLoading(false)
   }
+
+  setLoading(false)
 }
 
 export const getMostPopular = (pageToken?: string): AppThunk => async (
