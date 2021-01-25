@@ -18,6 +18,9 @@ export const homeSlice = createSlice({
     ) => {
       state.q = action.payload
     },
+    cleanSearchToken: (state: HomeStateInterface) => {
+      state.q = undefined
+    },
     loadData: (
       state: HomeStateInterface,
       action: PayloadAction<HomeStateInterface>,
@@ -46,6 +49,7 @@ export const {
   loadError,
   setSearchToken,
   setIsLoading,
+  cleanSearchToken,
 } = homeSlice.actions
 
 const getVideos = async ({

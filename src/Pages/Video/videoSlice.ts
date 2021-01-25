@@ -31,10 +31,13 @@ export const videoSlice = createSlice({
     ) => {
       state.loading = action.payload
     },
+    cleanData: (state: VideoStateInterface) => {
+      state.item = undefined
+    }
   },
 })
 
-export const { loadData, loadError, setIsLoading } = videoSlice.actions
+export const { loadData, loadError, setIsLoading, cleanData } = videoSlice.actions
 
 export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
   const endpoint = buildEndpointUrl(API.getVideo, { v: videoId })
@@ -42,8 +45,9 @@ export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
   dispatch(setIsLoading(true))
 
   try {
-    const response = await axios.get(endpoint)
-    dispatch(loadData(response.data))
+    const { data: { items } } = await axios.get(endpoint)
+    const [item] = items
+    dispatch(loadData(item))
   } catch (e) {
     console.error(e)
     dispatch(loadError(e.response.data))

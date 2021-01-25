@@ -7,4 +7,5 @@ export {
   searchVideos,
   setSearchToken,
   selectLoading,
+  cleanSearchToken,
 } from './homeSlice'

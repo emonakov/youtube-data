@@ -1,20 +1,13 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Helmet } from 'react-helmet-async'
 
+import VideoPage from '../../components/VideoPage'
 import { store } from './videoStore'
 
-const Video: React.FC = () => {
-  console.log(store.getState())
-
-  return (
-    <Provider store={store}>
-      <Helmet>
-        <title>Some video title</title>
-      </Helmet>
-      <h1>VIDEO PAGE</h1>
-    </Provider>
-  )
-}
+const Video: React.FC = () => (
+  <Provider store={store}>
+    <VideoPage />
+  </Provider>
+)
 
 export default Video

@@ -10,7 +10,6 @@ const Form = styled.form`
 
   @media (max-width: 1199px) {
     box-sizing: border-box;
-    padding: ${({ theme }) => theme.paddingContent};
   }
 `
 
@@ -29,7 +28,7 @@ const ButtonReset = styled.button`
   color: ${({ theme }) => theme.colors.white};
   border: none;
   text-transform: uppercase;
-  padding: ${({ theme }) => theme.paddingStd} ${({ theme }) => theme.paddingContent};
+  padding: ${({ theme }) => `${theme.paddingStd} ${theme.paddingContent}`};
   border-radius: 4px;
   cursor: pointer;
 
@@ -54,11 +53,13 @@ type FormData = {
 interface Props {
   onSearch: (searchToken: string) => void
   onReset: () => void
+  searchTerm?: string
 }
 
 const Search: React.FC<Props> = ({
   onSearch,
   onReset,
+  searchTerm,
 }) => {
   const {
     register,
@@ -66,8 +67,10 @@ const Search: React.FC<Props> = ({
     reset,
     formState: { isDirty, isSubmitted },
     watch,
+    setValue,
   } = useForm<FormData>({
     mode: 'onBlur',
+    defaultValues: { q: ' ' }
   })
 
   const q = watch('q')
@@ -76,11 +79,15 @@ const Search: React.FC<Props> = ({
     if (!q) {
       reset()
 
-      if (isSubmitted) {
+      if (isSubmitted || searchTerm) {
         onReset()
       }
     }
-  }, [q, reset, isSubmitted, onReset])
+  }, [q, reset, isSubmitted, onReset, searchTerm])
+
+  useEffect(() => {
+    setValue('q', searchTerm, { shouldDirty: true })
+  }, [setValue, searchTerm])
 
   const onSubmit = ({ q }: FormData) => onSearch(q)
 
@@ -92,7 +99,7 @@ const Search: React.FC<Props> = ({
         type="button"
         onClick={() => {
           reset()
-          if (isSubmitted) {
+          if (isSubmitted || searchTerm) {
             onReset()
           }
         }}

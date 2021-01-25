@@ -3,7 +3,6 @@ import styled, { ThemeContext } from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from 'react-loading'
 
-
 import Search from '../Search'
 import Pagination from '../shared/Pagination'
 import GridContainer from '../shared/GridContainer'
@@ -16,6 +15,7 @@ import {
   selectPageTokens,
   setSearchToken,
   selectLoading,
+  cleanSearchToken,
 } from '../../Pages/Home'
 
 const Container = styled.main`
@@ -34,12 +34,13 @@ const Header = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: ${({ theme }) => theme.paddingContent};
 `
 
 const HomePage: React.FC = () => {
   const theme = useContext(ThemeContext)
   const items = useSelector(selectItems)
-  const searchToken = useSelector(selectSearchToken)
+  const searchTerm = useSelector(selectSearchToken)
   const [prevPageToken, nextPageToken] = useSelector(selectPageTokens)
   const isLoading = useSelector(selectLoading)
   const dispatch = useDispatch()
@@ -54,7 +55,7 @@ const HomePage: React.FC = () => {
     dispatch(getMostPopular(pageToken))
 
   const onSearchNextPage = (pageToken: string) =>
-    dispatch(searchVideos(searchToken, pageToken))
+    dispatch(searchVideos(searchTerm, pageToken))
 
   const onSearch = (queryToken: string) => {
     dispatch(setSearchToken(queryToken))
@@ -62,7 +63,7 @@ const HomePage: React.FC = () => {
   }
 
   const onReset = () => {
-    dispatch(setSearchToken(''))
+    dispatch(cleanSearchToken())
     dispatch(getMostPopular())
   }
 
@@ -70,7 +71,8 @@ const HomePage: React.FC = () => {
     <>
       <Header>
         <Head>Search youtube or see popular</Head>
-        <Search onSearch={onSearch} onReset={onReset} />
+        <Search onSearch={onSearch} onReset={onReset} searchTerm={searchTerm} />
+        {searchTerm && <span>search term: {searchTerm}</span>}
       </Header>
       <Container>
         {!isLoading && (
@@ -83,7 +85,7 @@ const HomePage: React.FC = () => {
               {items?.length === 0 && <h2>Nothing found</h2>}
             </GridContainer>
             <Pagination
-              onPageChange={searchToken ? onSearchNextPage : onPopularNextPage}
+              onPageChange={searchTerm ? onSearchNextPage : onPopularNextPage}
               nextPage={nextPageToken}
               prevPage={prevPageToken}
               isDisabled={isLoading}
