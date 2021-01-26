@@ -38,7 +38,8 @@
     "eject": "react-scripts eject",
     "server": "nodemon ./server",
     "dev": "concurrently \"yarn start\" \"yarn server\"",
-    "test:coverage": "react-scripts test --watchAll=false --coverage"
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
+    "ci": "concurrently \"yarn test:coverage\" \"yarn build\""
   },
   "proxy": "http://localhost:8081",
   "eslintConfig": {
