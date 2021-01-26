@@ -22,31 +22,4 @@ describe('VideoPage', () => {
     await screen.findByText(videoTitle)
     expect(screen.getByTestId('video-iframe')).toBeInTheDocument()
   })
-
-  it('displays "Video not found" message', async () => {
-    mockAxios.get.mockImplementationOnce(() =>
-      Promise.resolve({}),
-    )
-    render(<App />)
-    await screen.findByText('Video not found')
-  })
-
-  it('displays error', async () => {
-    mockAxios.get.mockImplementation(() =>
-      Promise.reject({
-        response: {
-          data: {
-            error: {
-              code: 401,
-              message: 'test error message',
-              errors: ['testError'],
-            },
-          },
-        },
-      }),
-    )
-
-    render(<App />)
-    await screen.findByTestId('error')
-  })
 })
