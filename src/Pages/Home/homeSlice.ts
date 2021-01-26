@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, RootState } from './homeStore'
 import { API } from '../../config/api'
 import { buildEndpointUrl } from '../../helpers/buildUrl'
+import { reportError } from '../../helpers/error'
 import { HomeStateInterface } from '../../interfaces/HomeStateInterface'
 
 const initialState: HomeStateInterface = {}
@@ -78,8 +79,7 @@ const getVideos = async ({
     const response = await axios.get(endpoint)
     successCallback(response.data)
   } catch (e) {
-    console.error(e)
-    errorCallback(e.response.data)
+    reportError(e, errorCallback)
   }
 
   setLoading(false)

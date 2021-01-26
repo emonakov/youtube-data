@@ -54,10 +54,10 @@ const HomePage: React.FC = () => {
     }
   }, [dispatch, items])
 
-  const onPopularNextPage = (pageToken: string) =>
+  const onPopularPageChange = (pageToken: string) =>
     dispatch(getMostPopular(pageToken))
 
-  const onSearchNextPage = (pageToken: string) =>
+  const onSearchPageChange = (pageToken: string) =>
     dispatch(searchVideos(searchTerm, pageToken))
 
   const onSearch = (queryToken: string) => {
@@ -81,7 +81,7 @@ const HomePage: React.FC = () => {
       <Container>
         {!isLoading && (
           <>
-            <GridContainer>
+            <GridContainer data-testid="video-list-container">
               {items &&
                 items.map((item) => (
                   <VideoThumbnail key={item.etag} item={item} />
@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
               {items?.length === 0 && <h2>Nothing found</h2>}
             </GridContainer>
             <Pagination
-              onPageChange={searchTerm ? onSearchNextPage : onPopularNextPage}
+              onPageChange={searchTerm ? onSearchPageChange : onPopularPageChange}
               nextPage={nextPageToken}
               prevPage={prevPageToken}
               isDisabled={isLoading}

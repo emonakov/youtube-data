@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, RootState } from './videoStore'
 import { API } from '../../config/api'
 import { buildEndpointUrl } from '../../helpers/buildUrl'
+import { reportError } from '../../helpers/error'
 import { VideoStateInterface } from '../../interfaces/VideoStateInterface'
 import { ItemInterface } from '../../interfaces/ItemInterface'
 
@@ -83,8 +84,7 @@ export const getVideo = (videoId: string): AppThunk => async (dispatch) => {
     const [item] = items
     dispatch(loadData(item))
   } catch (e) {
-    console.error(e)
-    dispatch(loadError(e.response.data))
+    reportError(e, () => dispatch(loadError(e.response.data)))
   }
 
   dispatch(setIsLoading(false))

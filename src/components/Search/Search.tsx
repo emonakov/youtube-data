@@ -56,11 +56,7 @@ interface Props {
   searchTerm?: string
 }
 
-const Search: React.FC<Props> = ({
-  onSearch,
-  onReset,
-  searchTerm,
-}) => {
+const Search: React.FC<Props> = ({ onSearch, onReset, searchTerm }) => {
   const {
     register,
     handleSubmit,
@@ -70,7 +66,7 @@ const Search: React.FC<Props> = ({
     setValue,
   } = useForm<FormData>({
     mode: 'onBlur',
-    defaultValues: { q: ' ' }
+    defaultValues: { q: ' ' },
   })
 
   const q = watch('q')
@@ -89,19 +85,19 @@ const Search: React.FC<Props> = ({
     setValue('q', searchTerm, { shouldDirty: true })
   }, [setValue, searchTerm])
 
-  const onSubmit = ({ q }: FormData) => onSearch(q)
+  const onSubmit = ({ q }: FormData) => {
+    onSearch(q)
+  }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Input name="q" ref={register} />
+      <Input name="q" ref={register} data-testid="search" />
       <ButtonReset
         disabled={!isDirty}
         type="button"
         onClick={() => {
           reset()
-          if (isSubmitted || searchTerm) {
-            onReset()
-          }
+          onReset()
         }}
       >
         RESET

@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.2",
+    "@types/jest": "^26.6.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
@@ -37,7 +37,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "nodemon ./server",
-    "dev": "concurrently \"yarn start\" \"yarn server\""
+    "dev": "concurrently \"yarn start\" \"yarn server\"",
+    "test:coverage": "react-scripts test --watchAll=false --coverage"
   },
   "proxy": "http://localhost:8081",
   "eslintConfig": {
@@ -54,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-styled-components": "^7.0.3"
   }
 }

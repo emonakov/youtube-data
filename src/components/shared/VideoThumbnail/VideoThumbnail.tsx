@@ -33,7 +33,7 @@ const VideoThumbnail: React.FC<{ item: ItemInterface }> = ({ item }) => {
   }
 
   return (
-    <Link to={`/video/${videoId}`}>
+    <Link to={`/video/${videoId}`} data-testid={videoId}>
       <Container>
         <h4>{item.snippet.title}</h4>
         <img

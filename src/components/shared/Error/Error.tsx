@@ -9,7 +9,7 @@ const Code = styled.code`
 
 const Error: React.FC<{ error?: ErrorInterface }> = ({ error }) =>
   error ? (
-    <pre>
+    <pre data-testid="error">
       <Code>{JSON.stringify(error, null, 2)}</Code>
     </pre>
   ) : null

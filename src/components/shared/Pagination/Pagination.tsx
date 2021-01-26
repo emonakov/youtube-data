@@ -45,12 +45,22 @@ const Pagination: React.FC<Props> = ({
   return (
     <Container>
       {prevPage && (
-        <Button disabled={isDisabled} onClick={() => onPageChange(prevPage)}>
+        <Button
+          data-testid="navigation-prev"
+          disabled={isDisabled}
+          onClick={() => onPageChange(prevPage)}
+        >
           &#8249;
         </Button>
       )}
       {nextPage && (
-        <Button disabled={isDisabled} onClick={() => onPageChange(nextPage)}>
+        <Button
+          data-testid="navigation-next"
+          disabled={isDisabled}
+          onClick={() => {
+            onPageChange(nextPage)
+          }}
+        >
           &#8250;
         </Button>
       )}

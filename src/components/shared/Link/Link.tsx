@@ -23,12 +23,11 @@ const LinkTo = styled(NavLink)`
   }
 `
 
-const Link: React.FC<{ to: string; exact?: boolean }> = ({
+const Link: React.FC<{ to: string }> = ({
   to,
   children,
-  exact = false,
 }) => (
-  <LinkTo to={to} exact={exact}>
+  <LinkTo to={to} exact>
     {children}
   </LinkTo>
 )

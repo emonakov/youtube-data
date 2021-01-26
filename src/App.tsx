@@ -17,7 +17,7 @@ const App: React.FC = () => (
     <HelmetProvider>
       <Router>
         <MenuBar>
-          <Link to="/" exact>
+          <Link to="/">
             Home
           </Link>
         </MenuBar>
